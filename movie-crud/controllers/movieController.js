@@ -2,10 +2,12 @@ const movies = require("../movies.json");
 const fs = require("fs");
 
 const getMovies = (req, res) => {
+  const movies = JSON.parse(fs.readFileSync("../movies.json").toString());
   res.status(200).json(movies);
 };
 
 const createMovie = (req, res) => {
+  const movies = JSON.parse(fs.readFileSync("../movies.json").toString());
   const newMovie = {
     id: movies.length + 1,
     title: req.body.title,
@@ -14,10 +16,12 @@ const createMovie = (req, res) => {
   };
 
   movies.push(newMovie);
+  console.log(movies);
 
   try {
     fs.writeFileSync("../movies.json", JSON.stringify(movies));
     res.status(201).json(newMovie);
+    console.log("yay");
   } catch (err) {
     console.error(err);
     res.status(500).send("Server error");
@@ -25,7 +29,9 @@ const createMovie = (req, res) => {
 };
 
 const getMovie = (req, res) => {
-  const movie = movies.find((movie) => movie.id === req.params.id);
+  const movies = JSON.parse(fs.readFileSync("../movies.json").toString());
+
+  const movie = movies.find((movie) => movie.id === parseInt(req.params.id));
 
   if (movie) {
     res.json(movie);
@@ -35,7 +41,7 @@ const getMovie = (req, res) => {
 };
 
 const updateMovie = (req, res) => {
-  const movie = movies.find((movie) => movie.id === req.params.id);
+  const movie = movies.find((movie) => movie.id === parseInt(req.params.id));
 
   const updatedMovie = {
     title: req.body.title,
