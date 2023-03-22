@@ -44,7 +44,7 @@ const ProductSchema = new mongoose.Schema(
         required: [true, "Please add a phone number"],
         validate: {
           validator: function (value) {
-            return /^(\+9725|\+972-5|9725|05)[-\s]?\d{7}$/.test(value);
+            return /^(\+9725|\+972-5|9725|05)[-\s]?\d{8}$/.test(value);
           },
           message: "Please add a valid Israeli phone number",
         },
