@@ -45,3 +45,35 @@ export const getProductByPriceRange = asyncHandler(async (req, res, next) => {
     data: product,
   });
 });
+
+export const updateProduct = asyncHandler(async (req, res, next) => {
+  const product = await Product.findById(req.params.id);
+  product.isActive = req.body.isActive;
+  product.details.discount = req.body.discount;
+
+  const updatedProduct = await product.save();
+
+  res.status(200).json({
+    success: true,
+    data: updatedProduct,
+  });
+});
+
+export const deleteProductById = asyncHandler(async (req, res, next) => {
+  const id = req.params.id;
+  const product = await Product.deleteOne({ _id: id });
+
+  res.status(200).json({
+    success: true,
+    data: product,
+  });
+});
+
+export const deleteAllProducts = asyncHandler(async (req, res, next) => {
+  const product = await Product.deleteMany();
+
+  res.status(200).json({
+    success: true,
+    data: product,
+  });
+});
