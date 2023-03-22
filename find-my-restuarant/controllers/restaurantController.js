@@ -26,8 +26,24 @@ export const getAllRestaurants = asyncHandler(async (req, res, next) => {
 
 export const getRestaurantByCuisine = asyncHandler(async (req, res, next) => {
   const cuisine = req.query.cuisine;
-  console.log(cuisine);
   const restaurant = await Restaurant.find({ cuisine: { $in: [cuisine] } });
+  res.status(200).json({
+    success: true,
+    data: restaurant,
+  });
+});
+
+export const getKosherRestaurants = asyncHandler(async (req, res, next) => {
+  const restaurant = await Restaurant.find({ kosher: true });
+  res.status(200).json({
+    success: true,
+    data: restaurant,
+  });
+});
+
+export const getRestaurantByCity = asyncHandler(async (req, res, next) => {
+  const city = req.query.city;
+  const restaurant = await Restaurant.find({ "address.city": { $in: [city] } });
   res.status(200).json({
     success: true,
     data: restaurant,
